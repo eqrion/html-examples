@@ -1,3 +1,3 @@
 # html-examples
 
-A collection of html pages for testing and profiling basic features of Gecko.
+A collection of test cases for web browser development.
