@@ -1,8 +1,19 @@
 <!DOCTYPE html>
 <html>
 <body>
-<script>
-document.querySelector("body").addEventListener('onkeypress', function(e) {}, { passive: false });
-</script>
 </body>
+<script type="text/javascript">
+    function fill(element) {
+        var text = '';
+        for (var i = 1; i < 10000; ++i) {
+            text = text + i + '\n';
+        }
+        element.innerText = text;
+    }
+    fill(document.querySelector('body'));
+
+    addEventListener('keyup', function(e) {
+        e.preventDefault();
+    }, { passive: false });
+</script>
 </html>
