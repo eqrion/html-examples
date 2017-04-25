@@ -12,8 +12,8 @@
     }
     fill(document.querySelector('body'));
 
-    addEventListener('keyup', function(e) {
-        e.preventDefault();
+    window.addEventListener('keydown', function(event) {
+        event.preventDefault();
     }, { passive: false });
 </script>
 </html>
