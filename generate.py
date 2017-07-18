@@ -29,6 +29,10 @@ def generate_index(dir):
 
     locals = [x for x in locals if not path.isdir(x)]
 
+    # Sort the lists
+    locals.sort()
+    all.sort()
+
     # Create the markdown file
 
     md = header
@@ -68,7 +72,8 @@ def generate_site(out_dir):
                     ignore=shutil.ignore_patterns("*.py", "index.html", ".git"))
 
     generate_index(out_dir)
-    for dir in [x for x in glob(path.join(out_dir, "**/")) if path.isdir(x)]:
+    for (dir, _, _) in os.walk(out_dir):
+        dir = path.join(dir, "")
         generate_index(dir)
 
 generate_site(sys.argv[1])
