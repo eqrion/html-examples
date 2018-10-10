@@ -44,10 +44,10 @@ sha1 = sha1.decode("ascii")
 sha1 = sha1[0:12]
 
 subprocess.check_call(["./generate.py", "public"])
-clear("../github/")
-transfer("public/", "../github/")
+clear("../github/web-tests/")
+transfer("public/", "../github/web-tests/")
 
-with cd("../github/"):
+with cd("../github/web-tests/"):
     subprocess.check_call(["git", "add", "--all"])
-    subprocess.check_call(["git", "commit", "-e", "-m", "Update to html-examples:{}".format(sha1)])
+    subprocess.check_call(["git", "commit", "-e", "-m", "Update to web-tests:{}".format(sha1)])
     subprocess.check_call(["git", "push"])
