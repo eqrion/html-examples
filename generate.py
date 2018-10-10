@@ -74,7 +74,7 @@ def generate_index(dir):
 <meta charset="utf=8"/>
 <html>
 <head>
-<link href="./style.css" rel="stylesheet">
+<link href="/style.css" rel="stylesheet">
 </head>
 <body>
 {0}
