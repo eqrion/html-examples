@@ -29,6 +29,15 @@ def generate_index(dir):
 
     locals = [x for x in locals if not path.isdir(x)]
 
+    hiddenExtensions = [".css", ".md", "index.html"]
+    def shouldHide(path):
+        for extension in hiddenExtensions:
+            if path.endswith(extension):
+                return True
+        return False
+    locals = list(filter(lambda x: not shouldHide(x), locals))
+    all = list(filter(lambda x: not shouldHide(x), all))
+
     # Sort the lists
     locals.sort()
     all.sort()
@@ -38,25 +47,40 @@ def generate_index(dir):
     md = header
 
     if len(locals) > 0:
-        md += "# Contents\n"
+        md += "## Contents\n"
         for file in locals:
             rel_path = file.replace(dir, "")
-            md += str.format("[{}]({})", rel_path, rel_path) + "\n"
+            md += str.format(" * [{}]({})", rel_path, rel_path) + "\n"
         md += "\n"
 
     if len(all) > 0:
-        md += "# Subdirectories\n"
+        md += "## Subdirectories\n"
         for file in all:
             rel_path = file.replace(dir, "")
             if path.isdir(file):
-                md += str.format("[{}]({})", rel_path, path.join(rel_path, "index.html")) + "\n"
+                md += str.format(" * [{}]({})", rel_path, path.join(rel_path, "index.html")) + "\n"
             else:
-                md += str.format("[{}]({})", rel_path, rel_path) + "\n"
+                md += str.format(" * [{}]({})", rel_path, rel_path) + "\n"
         md += "\n"
 
-    # Write the HTML
+    # Generate the body
 
-    html = markdown.markdown(md, extensions=['markdown.extensions.nl2br'])
+    body = markdown.markdown(md, extensions=['markdown.extensions.nl2br'])
+
+    # Generate the Html
+
+    html = \
+"""<!DOCTYPE html>
+<meta charset="utf=8"/>
+<html>
+<head>
+<link href="./style.css" rel="stylesheet">
+</head>
+<body>
+{0}
+</body>
+</html>
+""".format(body)
 
     with open(path.join(dir, "index.html"), "w") as out:
         out.write(html)
