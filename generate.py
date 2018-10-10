@@ -8,7 +8,7 @@ import sys
 import shutil
 import markdown
 
-def generate_index(dir):
+def generate_index(dir, is_root):
     # Read the header
 
     readme_path = path.join(dir, "README.md")
@@ -19,6 +19,13 @@ def generate_index(dir):
         header = open(readme_path).read()
     elif path.exists(index_path):
         header = open(index_path).read()
+    else:
+        header = str.format("# {}\n", path.basename(path.dirname(dir)))
+
+    if not is_root:
+        header += "\n"
+        header += "[Go up a directory](./..).\n"
+        header += "[Go up to root directory](/).\n"
 
     # Gather the files
 
@@ -71,7 +78,7 @@ def generate_index(dir):
 
     html = \
 """<!DOCTYPE html>
-<meta charset="utf=8"/>
+<meta charset="utf-8"/>
 <html>
 <head>
 <style type="text/css">
@@ -87,6 +94,19 @@ body {{
 }}
 h1 {{
     margin-top: 0px;
+    font-style: italic;
+}}
+h2 {{
+    margin-bottom: 0.5em;
+}}
+ul {{
+    margin-top: 0.5em;
+}}
+li {{
+    margin: 0.5em;
+}}
+a, a:visited, a:hover, a:active {{
+  color: rgb(0, 0, 238);
 }}
 </style>
 </head>
@@ -109,9 +129,10 @@ def generate_site(out_dir):
                     out_dir,
                     ignore=shutil.ignore_patterns("*.py", "index.html", ".git"))
 
-    generate_index(out_dir)
+    is_root = True
     for (dir, _, _) in os.walk(out_dir):
         dir = path.join(dir, "")
-        generate_index(dir)
+        generate_index(dir, is_root)
+        is_root = False
 
 generate_site(sys.argv[1])
